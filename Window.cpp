@@ -102,6 +102,10 @@ void loadMedia()
     srctile.x = srctile.y = 0;
     destile.x = 9 * TILE_WIDTH;
     destile.y = 14 * TILE_HEIGHT;
+
+    // transparency
+    Uint32 color = SDL_MapRGB(player->format, 0xff, 0x00, 0xff);
+    SDL_SetColorKey(player, SDL_TRUE, color);
     SDL_BlitSurface(player, &srctile, screen, &destile);
     SDL_UpdateWindowSurface(window);
 }
@@ -202,19 +206,21 @@ int main(int argc, char* args[])
                     tilecolor.w = tilecolor.h = TILE_WIDTH;
                 }
             }
+
+            playerpos.x = position.x;
+            playerpos.y = position.y;
+            printf("X = %d, Y = %d\n", position.x, position.y);
+            SDL_BlitSurface(image, &tilecolor, screen, &playerpos);
+            position.x += direction.x * TILE_WIDTH;
+            position.y += direction.y * TILE_HEIGHT;
+            playerpos.x = position.x;
+            playerpos.y = position.y;
+            srctile.x = srctile.y = 0;
+            srctile.w = srctile.h = TILE_WIDTH;
+            SDL_BlitSurface(player, &srctile, screen, &playerpos);
+            SDL_UpdateWindowSurface(window);
+            direction.x = direction.y = 0;
         }
-        playerpos.x = position.x;
-        playerpos.y = position.y;
-        SDL_BlitSurface(image, &tilecolor, screen, &playerpos);
-        position.x += direction.x * TILE_WIDTH;
-        position.y += direction.y * TILE_HEIGHT;
-        playerpos.x = position.x;
-        playerpos.y = position.y;
-        srctile.x = srctile.y = 0;
-        srctile.w = srctile.h = TILE_WIDTH;
-        SDL_BlitSurface(player, &srctile, screen, &playerpos);
-        SDL_UpdateWindowSurface(window);
-        direction.x = direction.y = 0;
     }
     close();
 	return 0;
