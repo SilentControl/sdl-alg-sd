@@ -31,6 +31,29 @@ struct EventHandler
     bool exitGame();
 };
 
+class Player {
+public:
+    // unique player ID
+    unsigned int id;
+
+    // player's coordinates on the board
+    int x;
+    int y;
+
+    // the original image whence we will extract the player
+    SDL_Surface* image;
+
+    // player's position within the image
+    SDL_Rect position;
+
+    Player();
+
+    // the player will be moved towards the new coordinates
+    void Move (SDL_Rect direction);
+
+    ~Player();
+};
+
 Player::Player(){
     image = SDL_LoadBMP("hostages.bmp");
     position = {0, 0, TILE_HEIGHT, TILE_WIDTH};
@@ -47,6 +70,7 @@ Player::~Player(){
     SDL_FreeSurface(image);
     image = NULL;
 }
+
 
 EventHandler::EventHandler()
 {
