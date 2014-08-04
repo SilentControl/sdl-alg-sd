@@ -59,7 +59,7 @@ Player::Player(){
     position = {0, 0, TILE_HEIGHT, TILE_WIDTH};
 }
 
-Player::Move(SDL_Rect direction) {
+Player::Move(SDL_Rect direction, SDL_Surface* screen) {
     x += direction.x * TILE_WIDTH;
     y += direction.y * TILE_HEIGHT;
     SDL_Rect hero_position = {x, y, TILE_HEIGHT, TILE_WIDTH};
