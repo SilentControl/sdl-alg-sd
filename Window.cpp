@@ -31,6 +31,23 @@ struct EventHandler
     bool exitGame();
 };
 
+Player::Player(){
+    image = SDL_LoadBMP("hostages.bmp");
+    position = {0, 0, TILE_HEIGHT, TILE_WIDTH};
+}
+
+Player::Move(SDL_Rect direction) {
+    x += direction.x * TILE_WIDTH;
+    y += direction.y * TILE_HEIGHT;
+    SDL_Rect hero_position = {x, y, TILE_HEIGHT, TILE_WIDTH};
+    SDL_BlitSurface( image, &position, screen, &hero_position );
+}
+
+Player::~Player(){
+    SDL_FreeSurface(image);
+    image = NULL;
+}
+
 EventHandler::EventHandler()
 {
     direction.x = direction.y = 0;
