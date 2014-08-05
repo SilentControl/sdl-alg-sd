@@ -1,10 +1,12 @@
 #include <SDL.h>
+#include <fstream>
+#include <iostream>
 #include "GameShell.h"
 
 GameShell::GameShell()
 {
     SDL_Init(SDL_INIT_VIDEO);
-    window = SDL_CreateWindow("sdl-alg-sd", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+    window = SDL_CreateWindow("sdl-alg-sd", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);// | SDL_WINDOW_FULLSCREEN);
     screen = SDL_GetWindowSurface(window);
     background = SDL_LoadBMP("cs2dnorm.bmp");
 }
@@ -19,6 +21,43 @@ GameShell::~GameShell()
 void GameShell::refresh()
 {
     SDL_UpdateWindowSurface(window);
+}
+
+void GameShell::parse()
+{
+    SDL_Rect tiles[3];
+    SDL_Rect srctile, destile;
+    std::ifstream mapfile("map.txt");
+    int nr;
+
+    tiles[0].y = tiles[1].y = 0 * TILE_HEIGHT;
+    tiles[0].x = 10 * TILE_WIDTH;
+    tiles[1].x = 11 * TILE_WIDTH;
+    tiles[2].x = 14 * TILE_WIDTH;
+    tiles[2].y = 6 * TILE_HEIGHT;
+
+    for (int i = 0; i < 3; i++)
+    {
+        tiles[i].w = TILE_WIDTH;
+        tiles[i].h = TILE_HEIGHT;
+    }
+
+    destile.x = -TILE_WIDTH;
+    destile.y = 0;
+    while(mapfile >> nr)
+    {
+        //harta.push_back(nr);
+        srctile = tiles[nr];
+        destile.x += TILE_WIDTH;
+        SDL_BlitSurface(background, &srctile, screen, &destile);
+        if(destile.x >= SCREEN_WIDTH - TILE_WIDTH)
+        {
+            destile.y += TILE_WIDTH;
+            destile.x = -TILE_WIDTH;
+        }
+    }
+    SDL_UpdateWindowSurface(window);
+    mapfile.close();
 }
 
 void GameShell::loadMap()

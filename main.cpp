@@ -6,7 +6,8 @@ int main(int argc, char* args[])
 {
     GameShell game;
     Player bob;
-    game.loadMap();
+    //game.loadMap();
+    game.parse();
     bob.draw(game.screen);
     game.refresh();
 
