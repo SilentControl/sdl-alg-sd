@@ -1,6 +1,7 @@
 #include "GameShell.h"
 #include "EventHandler.h"
 #include "Player.h"
+#include "CollisionDetector.h"
 #include <fstream>
 #include <iostream>
 
@@ -8,8 +9,13 @@ int main(int argc, char* args[])
 {
     GameShell game;
     Player bob;
+<<<<<<< HEAD
     //game.loadMap();
     game.parse();
+=======
+    CollisionDetector col;
+    game.loadMap();
+>>>>>>> upstream/master
     bob.draw(game.screen);
     game.refresh();
 
@@ -24,13 +30,12 @@ int main(int argc, char* args[])
         else
         if(actions.direction.x != 0 || actions.direction.y != 0)
         {
-            std::cout<<"CRASH1\n";
-            game.repaintTile(bob.coord);
-            std::cout<<"CRASH2\n";
-            bob.move(actions.direction, game.screen);
-            std::cout<<"CRASH3\n";
-            game.refresh();
-            std::cout<<"CRASH4\n";
+            if(col.detect(bob.coord, actions.direction, game.tiles) == false)
+            {
+                game.repaintTile(bob.coord);
+                bob.move(actions.direction, game.screen);
+                game.refresh();
+            }
             actions.resetDirection();
         }
     }
