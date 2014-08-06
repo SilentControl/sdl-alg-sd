@@ -63,3 +63,35 @@ void GameShell::repaintTile(SDL_Rect& coord)
     // tiles[i]; i = 20 * Y + X;
     SDL_BlitSurface(background, &bkgtiles[tiles[(coord.x / TILE_WIDTH) + 20 * (coord.y / TILE_HEIGHT)]], screen, &coord);
 }
+
+void GameShell::action()
+{
+    loadMap();
+    bob.draw(screen);
+    refresh();
+    while(true)
+    {
+        int start = SDL_GetTicks();
+        actions.handleEvents();
+        if(actions.exitGame() == true)
+        {
+            break;
+        }
+        else
+        if(actions.direction.x != 0 || actions.direction.y != 0)
+        {
+            if(col.detect(bob.coord, actions.direction, tiles) == false)
+            {
+                repaintTile(bob.coord);
+                bob.move(actions.direction, screen);
+                refresh();
+            }
+            actions.resetDirection();
+        }
+
+		if(1000/FPS > SDL_GetTicks() - start)
+		{
+			SDL_Delay(1000/FPS - (SDL_GetTicks() - start));
+		}
+    }
+}
