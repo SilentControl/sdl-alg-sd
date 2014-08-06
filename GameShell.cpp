@@ -68,6 +68,7 @@ void GameShell::action()
 {
     loadMap();
     bob.draw(screen);
+    zombie.draw(screen);
     refresh();
     while(true)
     {
@@ -84,6 +85,21 @@ void GameShell::action()
             {
                 repaintTile(bob.coord);
                 bob.move(actions.direction, screen);
+                //while (true)
+                //{
+                    SDL_Rect temp = zombie.move(screen);
+                    if (col.detect(zombie.coord, temp, tiles) == false)
+                    {
+                        repaintTile(zombie.coord);
+
+                        zombie.coord.x += temp.x * TILE_WIDTH;
+                        zombie.coord.y += temp.y * TILE_HEIGHT;
+
+                        SDL_BlitSurface(zombie.image, &zombie.position, screen, &zombie.coord);
+                        //break;
+                    }
+                //}
+
                 refresh();
             }
             actions.resetDirection();
