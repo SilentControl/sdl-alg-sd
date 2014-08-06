@@ -68,7 +68,10 @@ void GameShell::action()
 {
     loadMap();
     bob.draw(screen);
+<<<<<<< HEAD
     zombie.draw(screen);
+=======
+>>>>>>> upstream/master
     refresh();
     while(true)
     {
@@ -85,6 +88,7 @@ void GameShell::action()
             {
                 repaintTile(bob.coord);
                 bob.move(actions.direction, screen);
+<<<<<<< HEAD
                 //while (true)
                 //{
                     SDL_Rect temp = zombie.move(screen);
@@ -100,6 +104,8 @@ void GameShell::action()
                     }
                 //}
 
+=======
+>>>>>>> upstream/master
                 refresh();
             }
             actions.resetDirection();
