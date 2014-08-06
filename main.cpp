@@ -9,13 +9,8 @@ int main(int argc, char* args[])
 {
     GameShell game;
     Player bob;
-<<<<<<< HEAD
-    //game.loadMap();
-    game.parse();
-=======
     CollisionDetector col;
     game.loadMap();
->>>>>>> upstream/master
     bob.draw(game.screen);
     game.refresh();
 

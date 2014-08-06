@@ -18,7 +18,6 @@ struct GameShell
 
     GameShell();
     ~GameShell();
-    void parse();
     void loadMap();
     void refresh();
     void repaintTile(SDL_Rect& coord);
