@@ -5,6 +5,10 @@
 #include "Player.h"
 #include "CollisionDetector.h"
 #include "EventHandler.h"
+<<<<<<< HEAD
+#include "Enemy.h"
+=======
+>>>>>>> upstream/master
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -22,6 +26,10 @@ struct GameShell
     Player bob;
     CollisionDetector col;
     EventHandler actions;
+<<<<<<< HEAD
+    Enemy zombie;
+=======
+>>>>>>> upstream/master
 
     GameShell();
     ~GameShell();
