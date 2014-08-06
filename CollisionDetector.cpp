@@ -23,3 +23,5 @@ bool CollisionDetector::detect(SDL_Rect& playerPos, SDL_Rect& direction, std::ve
 		return false;
 	}
 }
+
+//Comment
