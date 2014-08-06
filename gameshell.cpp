@@ -58,7 +58,7 @@ void GameShell::loadMap()
     SDL_UpdateWindowSurface(window);
 }
 
-void GameShell::repaintTile(SDL_Rect coord)
+void GameShell::repaintTile(SDL_Rect& coord)
 {
     // tiles[i]; i = 20 * Y + X;
     SDL_BlitSurface(background, &bkgtiles[tiles[(coord.x / TILE_WIDTH) + 20 * (coord.y / TILE_HEIGHT)]], screen, &coord);

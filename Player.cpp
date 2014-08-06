@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "GameShell.h"
+#include <iostream>
 
 Player::Player(){
     image = SDL_LoadBMP("hostages.bmp");
@@ -9,7 +10,7 @@ Player::Player(){
     SDL_SetColorKey(image, SDL_TRUE, color);
 }
 
-void Player::move(SDL_Rect direction, SDL_Surface* screen) {
+void Player::move(SDL_Rect& direction, SDL_Surface* screen) {
     coord.x += direction.x * TILE_WIDTH;
     coord.y += direction.y * TILE_HEIGHT;
     SDL_BlitSurface(image, &position, screen, &coord);

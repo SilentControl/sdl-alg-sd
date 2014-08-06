@@ -19,7 +19,7 @@ public:
     Player();
 
     // the player will be moved towards the new coordinates
-    void move(SDL_Rect direction, SDL_Surface* screen);
+    void move(SDL_Rect& direction, SDL_Surface* screen);
     void draw(SDL_Surface* screen);
     ~Player();
 };
