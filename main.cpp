@@ -17,6 +17,7 @@ int main(int argc, char* args[])
     EventHandler actions;
     while(true)
     {
+        int start = SDL_GetTicks();
         actions.handleEvents();
         if(actions.exitGame() == true)
         {
@@ -33,6 +34,11 @@ int main(int argc, char* args[])
             }
             actions.resetDirection();
         }
+
+		if(1000/FPS > SDL_GetTicks() - start)
+		{
+			SDL_Delay(1000/FPS - (SDL_GetTicks() - start));
+		}
     }
 	return 0;
 }
