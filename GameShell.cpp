@@ -69,6 +69,7 @@ void GameShell::action()
     loadMap();
     bob.draw(screen);
     zombie.draw(screen);
+    bob.updateLifebar(screen);
     refresh();
     while(true)
     {
@@ -95,6 +96,24 @@ void GameShell::action()
                 }
                 zombie.draw(screen);
                 bob.draw(screen);
+
+                // zombie attacks the player
+                if(bob.coord.x == zombie.coord.x && bob.coord.y == zombie.coord.y)
+                {
+                    bob.deductHealth(zombie.damage);
+                    // repair the 3 tiles which are under the lifebar
+                    SDL_Rect repair;
+                    repair.x = SCREEN_WIDTH / 2;
+                    repair.y = SCREEN_HEIGHT - 20;
+                    for(int i = 0; i < 4; i++)
+                    {
+                        repaintTile(repair);
+                        repair.x += TILE_WIDTH;
+                    }
+
+                    // update the player's lifebar
+                    bob.updateLifebar(screen);
+                }
 
                 refresh();
             }
