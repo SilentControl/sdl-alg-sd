@@ -37,7 +37,6 @@ SDL_Rect Enemy::move(SDL_Surface* screen) {
             break;
     }
     return temp;
-    //SDL_BlitSurface(image, &position, screen, &coord);
 }
 
 void Enemy::draw(SDL_Surface* screen)
