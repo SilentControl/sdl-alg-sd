@@ -6,6 +6,7 @@ class Enemy {
 public:
     // unique enemy ID
     unsigned int id;
+    const unsigned int damage = 10;
 
     // enemy's coordinates on the board
     SDL_Rect coord;
