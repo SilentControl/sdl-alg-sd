@@ -20,7 +20,7 @@ Player::Player(){
     bartile.h = 20;
     bartile.w = 100;
 
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < 7; i++)
     {
         bartype.push_back(bartile);
         bartile.y += 20;
@@ -63,7 +63,8 @@ void Player::updateLifebar(SDL_Surface* screen)
 {
     SDL_Rect barpos;
     barpos.x = SCREEN_WIDTH / 2;
-    barpos.y = SCREEN_HEIGHT - 20; // 20 is the HEIGHT of the lifebar
+    barpos.y = 6; // 20 is the HEIGHT of the lifebar
+
     if(health <= 100 && health >= 80)
     {
         bartype[0].w = health;
@@ -104,4 +105,6 @@ void Player::updateLifebar(SDL_Surface* screen)
         bartype[5].w = 100;
         SDL_BlitSurface(lifebar, &bartype[5], screen, &barpos);
     }
+
+    SDL_BlitSurface(lifebar, &bartype[6], screen, &barpos);
 }

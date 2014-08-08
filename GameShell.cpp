@@ -104,7 +104,7 @@ void GameShell::action()
                     // repair the 3 tiles which are under the lifebar
                     SDL_Rect repair;
                     repair.x = SCREEN_WIDTH / 2;
-                    repair.y = SCREEN_HEIGHT - 20;
+                    repair.y = 0;
                     for(int i = 0; i < 4; i++)
                     {
                         repaintTile(repair);
