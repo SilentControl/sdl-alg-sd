@@ -11,6 +11,7 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
+const int BAR_WIDTH = 100;
 const int FPS = 30;
 
 struct GameShell
@@ -18,8 +19,11 @@ struct GameShell
     SDL_Window* window;
     SDL_Surface* screen;
     SDL_Surface* background;
+    // the player's lifebar
+    SDL_Surface* lifebar;
     std::vector<SDL_Rect> bkgtiles;
     std::vector<int> tiles;
+    std::vector<SDL_Rect> bartype;
     Player bob;
     CollisionDetector col;
     EventHandler actions;
@@ -31,6 +35,8 @@ struct GameShell
     void refresh();
     void repaintTile(SDL_Rect& coord);
     void action();
+    bool deductHealth(unsigned int value);
+    void updateLifebar(SDL_Surface* screen);
 };
 
 #endif
