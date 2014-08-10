@@ -11,7 +11,7 @@ Enemy::Enemy(){
     coord = {2 * TILE_WIDTH, 5 * TILE_HEIGHT, 0, 0};
     Uint32 color = SDL_MapRGB(image->format, 0xFF, 0x00, 0xFF);
     SDL_SetColorKey(image, SDL_TRUE, color);
-    damage = 10;
+    damage = 100;
 }
 
 SDL_Rect Enemy::move(SDL_Surface* screen) {

@@ -11,8 +11,12 @@ GameShell::GameShell()
     screen = SDL_GetWindowSurface(window);
     background = SDL_LoadBMP("cs2dnorm.bmp");
     lifebar = SDL_LoadBMP("lifebar.bmp");
+    gameover = SDL_LoadBMP("gover.bmp");
+    blood = SDL_LoadBMP("blood.bmp");
     Uint32 color = SDL_MapRGB(lifebar->format, 0xFF, 0x00, 0xFF);
     SDL_SetColorKey(lifebar, SDL_TRUE, color);
+    SDL_SetColorKey(gameover, SDL_TRUE, color);
+    SDL_SetColorKey(blood, SDL_TRUE, color);
     SDL_Rect tile;
     tile.y = 0;
     tile.w = tile.h = TILE_HEIGHT;
@@ -41,6 +45,8 @@ GameShell::GameShell()
 GameShell::~GameShell()
 {
     SDL_FreeSurface(lifebar);
+    SDL_FreeSurface(gameover);
+    SDL_FreeSurface(blood);
     lifebar = NULL;
     SDL_FreeSurface(background);
     SDL_DestroyWindow(window);
@@ -90,53 +96,78 @@ void GameShell::action()
     zombie.draw(screen);
     updateLifebar(screen);
     refresh();
+    bool playing = true; // is the player alive?
     while(true)
     {
         int start = SDL_GetTicks();
         actions.handleEvents();
-        if(actions.exitGame() == true)
+        if(playing == false)
         {
-            break;
+            if(actions.exitGame() == true)
+            {
+                break;
+            }
         }
         else
-        if(actions.direction.x != 0 || actions.direction.y != 0)
         {
-            if(col.detect(bob.coord, actions.direction, tiles) == false)
+            if(actions.exitGame() == true)
             {
-                repaintTile(bob.coord);
-                bob.move(actions.direction, screen);
-                SDL_Rect temp = zombie.move(screen);
-                repaintTile(zombie.coord);
+                break;
+            }
 
-                if (col.detect(zombie.coord, temp, tiles) == false)
+            else
+            if(actions.direction.x != 0 || actions.direction.y != 0)
+            {
+                if(col.detect(bob.coord, actions.direction, tiles) == false)
                 {
-                    zombie.coord.x += temp.x * TILE_WIDTH;
-                    zombie.coord.y += temp.y * TILE_HEIGHT;
-                }
-                zombie.draw(screen);
-                bob.draw(screen);
+                    repaintTile(bob.coord);
+                    bob.move(actions.direction, screen);
+                    SDL_Rect temp = zombie.move(screen);
+                    repaintTile(zombie.coord);
 
-                // zombie attacks the player
-                if(bob.coord.x == zombie.coord.x && bob.coord.y == zombie.coord.y)
-                {
-                    deductHealth(zombie.damage);
-                    // repair the 3 tiles which are under the lifebar
-                    SDL_Rect repair;
-                    repair.x = (SCREEN_WIDTH - BAR_WIDTH) / 2 - 14;
-                    repair.y = 0;
-                    for(int i = 0; i < 4; i++)
+                    if (col.detect(zombie.coord, temp, tiles) == false)
                     {
-                        repaintTile(repair);
-                        repair.x += TILE_WIDTH;
+                        zombie.coord.x += temp.x * TILE_WIDTH;
+                        zombie.coord.y += temp.y * TILE_HEIGHT;
                     }
+                    zombie.draw(screen);
+                    bob.draw(screen);
 
-                    // update the player's lifebar
-                    updateLifebar(screen);
+                    // zombie attacks the player
+                    if(bob.coord.x == zombie.coord.x && bob.coord.y == zombie.coord.y)
+                    {
+                        deductHealth(zombie.damage);
+                        // repair the 3 tiles which are under the lifebar
+                        SDL_Rect repair;
+                        repair.x = (SCREEN_WIDTH - BAR_WIDTH) / 2 - 14;
+                        repair.y = 0;
+                        for(int i = 0; i < 4; i++)
+                        {
+                            repaintTile(repair);
+                            repair.x += TILE_WIDTH;
+                        }
+
+                        // update the player's lifebar
+                        updateLifebar(screen);
+                    }
                 }
 
                 refresh();
             }
             actions.resetDirection();
+        }
+
+        if(bob.health <= 0 && playing == true)
+        {
+            SDL_Rect bloodpos;
+            bloodpos.x = bloodpos.y = 0;
+            bloodpos.w = bloodpos.h = TILE_HEIGHT;
+            repaintTile(zombie.coord);
+            zombie.draw(screen);
+            SDL_BlitSurface(blood, &bloodpos, screen, &zombie.coord);
+            gameOver();
+            playing = false;
+            refresh();
         }
 
 		if(1000/FPS > SDL_GetTicks() - start)
@@ -208,4 +239,25 @@ void GameShell::updateLifebar(SDL_Surface* screen)
     }
 
     SDL_BlitSurface(lifebar, &bartype[6], screen, &barpos);
+}
+
+void GameShell::gameOver()
+{
+    SDL_Rect fullscreen;
+    SDL_Rect position;
+    SDL_Rect goverpos;
+    fullscreen.x = fullscreen.y = 0;
+    fullscreen.h = SCREEN_HEIGHT;
+    fullscreen.w = SCREEN_WIDTH;
+    //Uint32 color = SDL_MapRGB(screen->format, 0x00, 0x00, 0x00);
+    //SDL_FillRect(screen, &fullscreen, color);
+    Uint8 alpha = 1;
+    SDL_SetSurfaceBlendMode(screen, SDL_BLENDMODE_BLEND);
+    SDL_SetSurfaceAlphaMod(screen, alpha);
+    position.x = 80;
+    position.y = 212;
+    goverpos.x = goverpos.y = 0;
+    goverpos.h = 55;
+    goverpos.w = 480;
+    SDL_BlitSurface(gameover, &goverpos, screen, &position);
 }

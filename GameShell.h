@@ -19,6 +19,8 @@ struct GameShell
     SDL_Window* window;
     SDL_Surface* screen;
     SDL_Surface* background;
+    SDL_Surface* gameover;
+    SDL_Surface* blood;
     // the player's lifebar
     SDL_Surface* lifebar;
     std::vector<SDL_Rect> bkgtiles;
@@ -37,6 +39,7 @@ struct GameShell
     void action();
     bool deductHealth(unsigned int value);
     void updateLifebar(SDL_Surface* screen);
+    void gameOver();
 };
 
 #endif
