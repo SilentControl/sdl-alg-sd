@@ -11,24 +11,15 @@ public:
     ~Node();
 };
 
-class LinkedList {
+class Inventory {
 public:
     Node* head;
-    static Node* cursor;
-
-    LinkedList();
-    void insert (Item* val);
-    void Delete ();
-    void Print();
-    ~LinkedList();
-};
-
-class Inventory {
-    LinkedList menu;
     Node* cursor;
 
     Inventory();
-    void updateCursor();
+    void insert (Item* val);
+    void Delete ();
+    void Print();
     void moveLeft();
     void moveRight();
     ~Inventory();
