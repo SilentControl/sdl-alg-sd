@@ -14,12 +14,24 @@ public:
 class LinkedList {
 public:
     Node* head;
+    static Node* cursor;
 
     LinkedList();
     void insert (Item* val);
-    void Delete (Item* val);
+    void Delete ();
     void Print();
     ~LinkedList();
+};
+
+class Inventory {
+    LinkedList menu;
+    Node* cursor;
+
+    Inventory();
+    void updateCursor();
+    void moveLeft();
+    void moveRight();
+    ~Inventory();
 };
 
 #endif

@@ -3,8 +3,11 @@
 Node::Node() {}
 Node::~Node() {}
 
+Node* LinkedList::cursor = NULL;
+
 LinkedList::LinkedList(){
     head = NULL;
+    cursor = new Node();
 }
 
 void LinkedList::insert (Item* val) {
@@ -13,6 +16,7 @@ void LinkedList::insert (Item* val) {
         head = new Node();
         head->val = val;
         head->next = head->prev = NULL;
+        cursor = head;
     }
     else
     {
@@ -25,27 +29,26 @@ void LinkedList::insert (Item* val) {
 
 }
 
-void LinkedList::Delete (Item* val) {
-    Node* temp = head;
-
-    while( temp && val != temp->val) {
-        temp = temp->next;
-    }
+void LinkedList::Delete () {
+    Node* temp = cursor;
 
     if (temp == NULL)
         return;
     else if (temp == head && head->next == NULL)
-        head = NULL;
+        cursor = head = NULL;
     else if (temp->next == NULL) {
+        cursor = cursor->prev;
         temp->prev->next = NULL;
         delete temp;
     }
     else if (temp == head) {
+        cursor = cursor->next;
         head->next->prev = NULL;
         head = head->next;
         delete temp;
     }
     else {
+        cursor = cursor->next;
         temp->prev->next = temp->next;
         temp->next->prev = temp->prev;
         delete temp;
@@ -70,4 +73,29 @@ LinkedList::~LinkedList() {
         head = head->next;
         delete prev;
     }
+    delete cursor;
+}
+
+Inventory::Inventory() {
+    cursor = new Node();
+}
+
+void Inventory::updateCursor() {
+    cursor = LinkedList::cursor;
+}
+
+void Inventory::moveLeft() {
+    if (LinkedList::cursor->prev != NULL)
+        LinkedList::cursor = LinkedList::cursor->prev;
+    updateCursor();
+}
+
+void Inventory::moveRight() {
+    if (LinkedList::cursor->next != NULL)
+        LinkedList::cursor = LinkedList::cursor->next;
+    updateCursor();
+}
+
+Inventory::~Inventory() {
+    delete cursor;
 }
