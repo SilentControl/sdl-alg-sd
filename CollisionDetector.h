@@ -7,7 +7,7 @@ struct CollisionDetector
 {
 	CollisionDetector();
 	~CollisionDetector();
-	bool detect(SDL_Rect& playerPos, SDL_Rect& direction, std::vector<int>& tiles);
+	bool detect(SDL_Rect& playerPos, SDL_Rect& direction, std::vector<std::vector<int> >& tiles);
 };
 
 #endif

@@ -9,24 +9,23 @@ GameShell::GameShell()
     SDL_Init(SDL_INIT_VIDEO);
     window = SDL_CreateWindow("sdl-alg-sd", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     screen = SDL_GetWindowSurface(window);
-    background = SDL_LoadBMP("cs2dnorm.bmp");
+    tileset = SDL_LoadBMP("tileset.bmp");
     lifebar = SDL_LoadBMP("lifebar.bmp");
     gameover = SDL_LoadBMP("gover.bmp");
-    blood = SDL_LoadBMP("blood.bmp");
+
     Uint32 color = SDL_MapRGB(lifebar->format, 0xFF, 0x00, 0xFF);
     SDL_SetColorKey(lifebar, SDL_TRUE, color);
     SDL_SetColorKey(gameover, SDL_TRUE, color);
-    SDL_SetColorKey(blood, SDL_TRUE, color);
+    SDL_SetColorKey(tileset, SDL_TRUE, color);
     SDL_Rect tile;
-    tile.y = 0;
+    tile.x = tile.y = 0;
     tile.w = tile.h = TILE_HEIGHT;
-    tile.x = 10 * TILE_WIDTH;
-    bkgtiles.push_back(tile);
-    tile.x = 11 * TILE_WIDTH;
-    bkgtiles.push_back(tile);
-    tile.x = 14 * TILE_WIDTH;
-    tile.y = 6 * TILE_HEIGHT;
-    bkgtiles.push_back(tile);
+
+    for(int i = 0; i < 10; i++)
+    {
+        bkgtiles[i] = tile;
+        tile.x += TILE_WIDTH;
+    }
 
     // creating life bar types
     SDL_Rect bartile;
@@ -46,12 +45,9 @@ GameShell::~GameShell()
 {
     SDL_FreeSurface(lifebar);
     SDL_FreeSurface(gameover);
-    SDL_FreeSurface(blood);
-    lifebar = NULL;
-    SDL_FreeSurface(background);
+    SDL_FreeSurface(tileset);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
 }
 
 void GameShell::refresh()
@@ -64,20 +60,28 @@ void GameShell::loadMap()
     SDL_Rect srctile, destile;
     std::ifstream mapfile("map.txt");
     int nr;
+    mapfile >> layerNumber;
+    std::vector<int> layer;
 
-    destile.x = -TILE_WIDTH;
-    destile.y = 0;
-    while(mapfile >> nr)
+    for(unsigned int i = 0; i < layerNumber; i++)
     {
-        tiles.push_back(nr);
-        srctile = bkgtiles[nr];
-        destile.x += TILE_WIDTH;
-        SDL_BlitSurface(background, &srctile, screen, &destile);
-        if(destile.x >= SCREEN_WIDTH - TILE_WIDTH)
+        destile.x = -TILE_WIDTH;
+        destile.y = 0;
+        layer.clear();
+        for(int j = 0; j < MAXTILES; j++)
         {
-            destile.y += TILE_WIDTH;
-            destile.x = -TILE_WIDTH;
+            mapfile >> nr;
+            layer.push_back(nr);
+            srctile = bkgtiles[nr];
+            destile.x += TILE_WIDTH;
+            SDL_BlitSurface(tileset, &srctile, screen, &destile);
+            if(destile.x >= SCREEN_WIDTH - TILE_WIDTH)
+            {
+                destile.y += TILE_WIDTH;
+                destile.x = -TILE_WIDTH;
+            }
         }
+        tiles.push_back(layer);
     }
     mapfile.close();
     SDL_UpdateWindowSurface(window);
@@ -86,7 +90,8 @@ void GameShell::loadMap()
 void GameShell::repaintTile(SDL_Rect& coord)
 {
     // tiles[i]; i = 20 * Y + X;
-    SDL_BlitSurface(background, &bkgtiles[tiles[(coord.x / TILE_WIDTH) + 20 * (coord.y / TILE_HEIGHT)]], screen, &coord);
+    for(unsigned int i = 0; i < layerNumber; i++)
+        SDL_BlitSurface(tileset, &bkgtiles[tiles[i][(coord.x / TILE_WIDTH) + 20 * (coord.y / TILE_HEIGHT)]], screen, &coord);
 }
 
 void GameShell::action()
@@ -164,7 +169,7 @@ void GameShell::action()
             bloodpos.w = bloodpos.h = TILE_HEIGHT;
             repaintTile(zombie.coord);
             zombie.draw(screen);
-            SDL_BlitSurface(blood, &bloodpos, screen, &zombie.coord);
+            SDL_BlitSurface(tileset, &bkgtiles[5], screen, &zombie.coord);
             gameOver();
             playing = false;
             refresh();

@@ -17,7 +17,7 @@ public:
     Node* cursor;
 
     Inventory();
-    void insert (Item* val);
+    void insert (Item*& val);
     void Delete ();
     void Print();
     void moveLeft();

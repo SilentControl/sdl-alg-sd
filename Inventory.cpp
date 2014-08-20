@@ -8,7 +8,7 @@ Inventory::Inventory(){
     cursor = new Node();
 }
 
-void Inventory::insert (Item* val) {
+void Inventory::insert (Item*& val) {
     if (head == NULL)
     {
         head = new Node();
