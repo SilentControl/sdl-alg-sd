@@ -59,9 +59,9 @@ void GameShell::loadMap()
 {
     SDL_Rect srctile, destile;
     std::ifstream mapfile("map.txt");
-    int nr;
+    int nr, id = 1;
     mapfile >> layerNumber;
-    std::vector<int> layer;
+    std::vector<Tile*> layer;
 
     for(unsigned int i = 0; i < layerNumber; i++)
     {
@@ -71,9 +71,14 @@ void GameShell::loadMap()
         for(int j = 0; j < MAXTILES; j++)
         {
             mapfile >> nr;
-            layer.push_back(nr);
             srctile = bkgtiles[nr];
             destile.x += TILE_WIDTH;
+
+            Tile* tile = new Tile(destile.x, destile.y);
+            tile->id = id++;
+            tile->type = nr;
+            layer.push_back(tile);
+
             SDL_BlitSurface(tileset, &srctile, screen, &destile);
             if(destile.x >= SCREEN_WIDTH - TILE_WIDTH)
             {
@@ -90,8 +95,9 @@ void GameShell::loadMap()
 void GameShell::repaintTile(SDL_Rect& coord)
 {
     // tiles[i]; i = 20 * Y + X;
+    //(tiles[i][(coord.x / TILE_WIDTH) + 20 * (coord.y / TILE_HEIGHT)])->type
     for(unsigned int i = 0; i < layerNumber; i++)
-        SDL_BlitSurface(tileset, &bkgtiles[tiles[i][(coord.x / TILE_WIDTH) + 20 * (coord.y / TILE_HEIGHT)]], screen, &coord);
+        SDL_BlitSurface(tileset, &bkgtiles[(tiles[i][(coord.x / TILE_WIDTH) + 20 * (coord.y / TILE_HEIGHT)])->type], screen, &coord);
 }
 
 void GameShell::action()

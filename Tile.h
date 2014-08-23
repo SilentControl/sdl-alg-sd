@@ -9,8 +9,9 @@ class Tile {
 public:
     SDL_Rect coord;
     int id;
+    int type;
 
-    Tile(SDL_Surface* image, int x, int y);
+    Tile(int x, int y);
     bool hasItem();
     void setItem(bool item);
     bool isTransparent();

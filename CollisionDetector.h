@@ -2,12 +2,14 @@
 #define _COLLISIONDETECTOR_H_
 #include <SDL.h>
 #include <vector>
+#include "Tile.h"
+#include "GameShell.h"
 
 struct CollisionDetector
 {
 	CollisionDetector();
 	~CollisionDetector();
-	bool detect(SDL_Rect& playerPos, SDL_Rect& direction, std::vector<std::vector<int> >& tiles);
+	bool detect(SDL_Rect& playerPos, SDL_Rect& direction, std::vector<std::vector<Tile*> >& tiles);
 };
 
 #endif

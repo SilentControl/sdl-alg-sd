@@ -1,6 +1,6 @@
 #include "Tile.h"
 
-Tile::Tile(SDL_Surface* image, int x, int y) {
+Tile::Tile(int x, int y) {
     coord.x = x;
     coord.y = y;
     coord.w = TILE_WIDTH;
