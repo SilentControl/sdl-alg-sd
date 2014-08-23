@@ -39,6 +39,8 @@ GameShell::GameShell()
         bartype.push_back(bartile);
         bartile.y += 20;
     }
+
+    col = new CollisionDetector();
 }
 
 GameShell::~GameShell()
@@ -46,6 +48,7 @@ GameShell::~GameShell()
     SDL_FreeSurface(lifebar);
     SDL_FreeSurface(gameover);
     SDL_FreeSurface(tileset);
+    delete col;
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
@@ -129,14 +132,14 @@ void GameShell::action()
             else
             if(actions.direction.x != 0 || actions.direction.y != 0)
             {
-                if(col.detect(bob.coord, actions.direction, tiles) == false)
+                if(col->detect(bob.coord, actions.direction, tiles) == false)
                 {
                     repaintTile(bob.coord);
                     bob.move(actions.direction, screen);
                     SDL_Rect temp = zombie.move(screen);
                     repaintTile(zombie.coord);
 
-                    if (col.detect(zombie.coord, temp, tiles) == false)
+                    if (col->detect(zombie.coord, temp, tiles) == false)
                     {
                         zombie.coord.x += temp.x * TILE_WIDTH;
                         zombie.coord.y += temp.y * TILE_HEIGHT;

@@ -19,7 +19,7 @@ const int FPS = 30;
 const int MAXTILES = 300;
 
 class Tile;
-//struct CollisionDetector;
+struct CollisionDetector;
 
 struct GameShell
 {
@@ -33,7 +33,7 @@ struct GameShell
     std::vector<SDL_Rect> bartype;
     std::vector<std::vector<Tile*> > tiles;
     Player bob;
-    CollisionDetector col;
+    CollisionDetector* col;
     EventHandler actions;
     Enemy zombie;
     Inventory inventory;

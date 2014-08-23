@@ -1,7 +1,7 @@
 sdl-alg-sd
 ==========
 
-A game in SDL which uses lots of data structures and algorithms
+A game in SDL which uses some data structures and algorithms
 
 Authors:  
 

@@ -1,7 +1,4 @@
 #include "GameShell.h"
-#include "EventHandler.h"
-#include "Player.h"
-#include "CollisionDetector.h"
 #include <fstream>
 #include <iostream>
 

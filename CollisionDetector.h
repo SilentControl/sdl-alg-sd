@@ -5,6 +5,8 @@
 #include "Tile.h"
 #include "GameShell.h"
 
+class Tile;
+
 struct CollisionDetector
 {
 	CollisionDetector();
