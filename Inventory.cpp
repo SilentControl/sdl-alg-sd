@@ -1,4 +1,5 @@
 #include "Inventory.h"
+#include "GameShell.h"
 
 Node::Node() {}
 Node::~Node() {}
@@ -8,7 +9,7 @@ Inventory::Inventory(){
     cursor = new Node();
 }
 
-void Inventory::insert (Item*& val) {
+void Inventory::insert (Item* val) {
     if (head == NULL)
     {
         head = new Node();
@@ -26,6 +27,19 @@ void Inventory::insert (Item*& val) {
     }
 
 }
+
+void Inventory::draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen)
+{
+    SDL_Rect dest;
+    dest.x = 13 * TILE_WIDTH;
+    dest.y = 0;
+    SDL_BlitSurface(tileset, &bkgtiles[6], screen, &dest);
+    dest.x += 2 * TILE_WIDTH;
+    SDL_BlitSurface(tileset, &bkgtiles[7], screen, &dest);
+    dest.x -= TILE_WIDTH;
+    SDL_BlitSurface(tileset, &bkgtiles[8], screen, &dest);
+}
+
 
 void Inventory::Delete () {
     Node* temp = cursor;

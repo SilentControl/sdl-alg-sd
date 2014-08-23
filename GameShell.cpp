@@ -1,5 +1,7 @@
 #include <SDL.h>
 #include "GameShell.h"
+#include "Healthpack.h"
+#include "Inventory.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -41,6 +43,7 @@ GameShell::GameShell()
     }
 
     col = new CollisionDetector();
+    itemlist.push_back(8); // 8 = medkit
 }
 
 GameShell::~GameShell()
@@ -80,6 +83,18 @@ void GameShell::loadMap()
             Tile* tile = new Tile(destile.x, destile.y);
             tile->id = id++;
             tile->type = nr;
+
+            if(nr == TRANSPARENCY)
+            {
+                tile->setTransparency(true);
+            }
+
+            if(isItem(nr) == true)
+            {
+                tile->setItem(true);
+                tile->object = new Healthpack();
+            }
+
             layer.push_back(tile);
 
             SDL_BlitSurface(tileset, &srctile, screen, &destile);
@@ -168,6 +183,24 @@ void GameShell::action()
 
                 refresh();
             }
+
+            else
+            if(actions.pick_object == true)
+            {
+                int layer_numb = layerNumber - 1;
+                int tile_numb = bob.coord.y / 32 * 20 + (bob.coord.x / 32);
+                if((tiles[layer_numb][tile_numb])->hasItem() == true)
+                {
+                    inventory.insert(tiles[layer_numb][tile_numb]->object);
+                    tiles[layer_numb][tile_numb]->setItem(false);
+                    inventory.draw(bkgtiles, tileset, screen);
+                    std::cout<<sizeof(SDL_Surface*);
+                    refresh();
+                }
+
+                actions.pick_object = false;
+            }
+
             actions.resetDirection();
         }
 
@@ -274,4 +307,16 @@ void GameShell::gameOver()
     goverpos.h = 55;
     goverpos.w = 480;
     SDL_BlitSurface(gameover, &goverpos, screen, &position);
+}
+
+bool GameShell::isItem(int value)
+{
+    for(unsigned int i = 0; i < itemlist.size(); i++)
+    {
+        if(itemlist[i] == value)
+        {
+            return true;
+        }
+    }
+    return false;
 }

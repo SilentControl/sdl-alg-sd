@@ -17,6 +17,7 @@ const int TILE_HEIGHT = 32;
 const int BAR_WIDTH = 100;
 const int FPS = 30;
 const int MAXTILES = 300;
+const int TRANSPARENCY = 9;
 
 class Tile;
 struct CollisionDetector;
@@ -32,6 +33,7 @@ struct GameShell
     std::map<int, SDL_Rect> bkgtiles;
     std::vector<SDL_Rect> bartype;
     std::vector<std::vector<Tile*> > tiles;
+    std::vector<int> itemlist;
     Player bob;
     CollisionDetector* col;
     EventHandler actions;
@@ -45,6 +47,7 @@ struct GameShell
     void repaintTile(SDL_Rect& coord);
     void action();
     bool deductHealth(unsigned int value);
+    bool isItem(int value);
     void updateLifebar(SDL_Surface* screen);
     void gameOver();
 

@@ -2,6 +2,7 @@
 #define _TILE_H_
 #include <SDL.h>
 #include "Gameshell.h"
+#include "Item.h"
 
 class Tile {
     bool transparency;
@@ -10,6 +11,7 @@ public:
     SDL_Rect coord;
     int id;
     int type;
+    Item* object;
 
     Tile(int x, int y);
     bool hasItem();

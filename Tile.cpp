@@ -8,6 +8,7 @@ Tile::Tile(int x, int y) {
 
     item = false;
     transparency = false;
+    object = NULL;
 }
 
 bool Tile::hasItem() {
@@ -30,4 +31,8 @@ int Tile::getLayer() {
     return id / ((SCREEN_HEIGHT / TILE_HEIGHT) * (SCREEN_WIDTH / TILE_WIDTH));
 }
 
-Tile::~Tile() {}
+Tile::~Tile()
+{
+    if(object != NULL)
+        delete object;
+}
