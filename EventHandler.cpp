@@ -13,7 +13,6 @@ EventHandler::~EventHandler()
 void EventHandler::resetDirection()
 {
     direction.x = direction.y = 0;
-    pick_object = false;
 }
 
 void EventHandler::handleEvents()
@@ -49,14 +48,9 @@ void EventHandler::handleEvents()
                 case SDLK_q:
                     quit = true;
                     break;
-                case SDLK_RETURN:
-                    direction.x = direction.y = 0;
-                    pick_object = true;
-                    break;
                 default:
                     direction.x = 0;
                     direction.y = 0;
-                    pick_object = false;
                     break;
             }
         }

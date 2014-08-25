@@ -38,7 +38,6 @@ struct GameShell
     CollisionDetector* col;
     EventHandler actions;
     Enemy zombie;
-    Inventory inventory;
 
     GameShell();
     ~GameShell();

@@ -22,6 +22,13 @@ void Player::draw(SDL_Surface* screen)
     SDL_BlitSurface(image, &position, screen, &coord);
 }
 
+void Player::pick(Tile*& tile) {
+    if (tile->hasItem()) {
+        inventory.insert(tile->object);
+        tile->setItem(false);
+    }
+}
+
 Player::~Player(){
     SDL_FreeSurface(image);
     image = NULL;

@@ -6,7 +6,6 @@ struct EventHandler
 {
     SDL_Event event;
     SDL_Rect direction;
-    bool pick_object;
     bool quit;
 
     EventHandler();

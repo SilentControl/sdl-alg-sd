@@ -2,6 +2,10 @@
 #define _PLAYER_H_
 #include <SDL.h>
 #include <vector>
+#include "Inventory.h"
+
+class Inventory;
+class Tile;
 
 class Player {
 public:
@@ -20,11 +24,14 @@ public:
     // player's position within the image
     SDL_Rect position;
 
+    Inventory inventory;
+
     Player();
 
     // the player will be moved towards the new coordinates
     void move(SDL_Rect& direction, SDL_Surface* screen);
     void draw(SDL_Surface* screen);
+    void pick(Tile*& tile);
     ~Player();
 };
 

@@ -185,20 +185,24 @@ void GameShell::action()
             }
 
             else
-            if(actions.pick_object == true)
             {
                 int layer_numb = layerNumber - 1;
                 int tile_numb = bob.coord.y / 32 * 20 + (bob.coord.x / 32);
                 if((tiles[layer_numb][tile_numb])->hasItem() == true)
                 {
-                    inventory.insert(tiles[layer_numb][tile_numb]->object);
-                    tiles[layer_numb][tile_numb]->setItem(false);
-                    inventory.draw(bkgtiles, tileset, screen);
+                    bob.pick(tiles[layer_numb][tile_numb]);
+
+                    delete (tiles[layer_numb][tile_numb])->object;
+                    (tiles[layer_numb][tile_numb])->object = NULL;
+                    (tiles[layer_numb][tile_numb])->type = TRANSPARENCY;
+
+                    repaintTile((tiles[layer_numb][tile_numb])->coord);
+                    bob.draw(screen);
+                    bob.inventory.draw(bkgtiles, tileset, screen);
+
                     std::cout<<sizeof(SDL_Surface*);
                     refresh();
                 }
-
-                actions.pick_object = false;
             }
 
             actions.resetDirection();

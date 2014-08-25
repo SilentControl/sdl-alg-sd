@@ -1,8 +1,7 @@
 #ifndef _ITEM_H_
 #define _ITEM_H_
 #include <SDL.h>
-#include "Player.h"
-
+class Player;
 struct Item
 {
 	SDL_Surface* image;

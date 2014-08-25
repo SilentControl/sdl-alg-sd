@@ -4,6 +4,9 @@
 #include <SDL.h>
 #include <map>
 
+struct Item;
+class Player;
+
 class Node {
 public:
     Item* val;
