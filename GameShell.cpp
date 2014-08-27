@@ -186,6 +186,26 @@ void GameShell::action()
 
             else
             {
+                if(actions.use_item == true)
+                {
+                    bob.inventory.head->val->use(bob);
+                    bob.inventory.draw(bkgtiles, tileset, screen);
+                }
+
+                if(actions.left_inv_arrow == true)
+                {
+                    bob.inventory.moveLeft();
+                    bob.inventory.draw(bkgtiles, tileset, screen);
+                }
+
+                if(actions.right_inv_arrow == true)
+                {
+                    bob.inventory.moveRight();
+                    bob.inventory.draw(bkgtiles, tileset, screen);
+                }
+
+                refresh();
+
                 int layer_numb = layerNumber - 1;
                 int tile_numb = bob.coord.y / 32 * 20 + (bob.coord.x / 32);
                 if((tiles[layer_numb][tile_numb])->hasItem() == true)
@@ -205,7 +225,7 @@ void GameShell::action()
                 }
             }
 
-            actions.resetDirection();
+            actions.reset();
         }
 
         if(bob.health <= 0 && playing == true)

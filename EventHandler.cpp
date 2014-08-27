@@ -1,18 +1,23 @@
 #include "EventHandler.h"
+#include "GameShell.h"
 
 EventHandler::EventHandler()
 {
     direction.x = direction.y = 0;
     quit = false;
+    use_item = false;
+    right_inv_arrow = false;
+    left_inv_arrow = false;
 }
 
 EventHandler::~EventHandler()
 {
 }
 
-void EventHandler::resetDirection()
+void EventHandler::reset()
 {
     direction.x = direction.y = 0;
+    use_item = false;
 }
 
 void EventHandler::handleEvents()
@@ -53,6 +58,15 @@ void EventHandler::handleEvents()
                     direction.y = 0;
                     break;
             }
+        }
+
+        else
+        if(event.type == SDL_MOUSEBUTTONDOWN)
+        {
+            int x = event.motion.x;
+            int y = event.motion.y;
+            if(x >= 14 * TILE_WIDTH && x < 15 * TILE_WIDTH && y >= 0 && y < TILE_HEIGHT)
+                use_item = true;
         }
     }
 }

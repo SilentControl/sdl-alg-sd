@@ -7,11 +7,14 @@ struct EventHandler
     SDL_Event event;
     SDL_Rect direction;
     bool quit;
+    bool use_item;
+    bool left_inv_arrow;
+    bool right_inv_arrow;
 
     EventHandler();
     ~EventHandler();
     void handleEvents();
-    void resetDirection();
+    void reset();
     bool exitGame();
 };
 
