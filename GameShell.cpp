@@ -2,6 +2,7 @@
 #include "GameShell.h"
 #include "Healthpack.h"
 #include "Inventory.h"
+#include "Armor.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -23,7 +24,7 @@ GameShell::GameShell()
     tile.x = tile.y = 0;
     tile.w = tile.h = TILE_HEIGHT;
 
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 11; i++)
     {
         bkgtiles[i] = tile;
         tile.x += TILE_WIDTH;
@@ -43,7 +44,8 @@ GameShell::GameShell()
     }
 
     col = new CollisionDetector();
-    itemlist.push_back(8); // 8 = medkit
+    itemlist.push_back(10); // 8 = medkit
+    itemlist.push_back(8); // 10 = armor
 }
 
 GameShell::~GameShell()
@@ -92,7 +94,10 @@ void GameShell::loadMap()
             if(isItem(nr) == true)
             {
                 tile->setItem(true);
-                tile->object = new Healthpack();
+                if(nr == 8)
+                    tile->object = new Healthpack();
+                else
+                    tile->object = new Armor();
             }
 
             layer.push_back(tile);
@@ -189,19 +194,19 @@ void GameShell::action()
                 if(actions.use_item == true)
                 {
                     bob.inventory.head->val->use(bob);
-                    bob.inventory.draw(bkgtiles, tileset, screen);
+                    bob.inventory.draw(bkgtiles, tileset, screen, 9);
                 }
 
                 if(actions.left_inv_arrow == true)
                 {
                     bob.inventory.moveLeft();
-                    bob.inventory.draw(bkgtiles, tileset, screen);
+                    bob.inventory.draw(bkgtiles, tileset, screen, 9);
                 }
 
                 if(actions.right_inv_arrow == true)
                 {
                     bob.inventory.moveRight();
-                    bob.inventory.draw(bkgtiles, tileset, screen);
+                    bob.inventory.draw(bkgtiles, tileset, screen, 9);
                 }
 
                 refresh();
@@ -214,11 +219,18 @@ void GameShell::action()
 
                     delete (tiles[layer_numb][tile_numb])->object;
                     (tiles[layer_numb][tile_numb])->object = NULL;
+                    int type = (tiles[layer_numb][tile_numb])->type;
                     (tiles[layer_numb][tile_numb])->type = TRANSPARENCY;
 
                     repaintTile((tiles[layer_numb][tile_numb])->coord);
                     bob.draw(screen);
-                    bob.inventory.draw(bkgtiles, tileset, screen);
+
+                    SDL_Rect dest;
+                    dest.x = 14 * TILE_WIDTH;
+                    dest.y = 0;
+                    repaintTile(dest);
+
+                    bob.inventory.draw(bkgtiles, tileset, screen, type);
 
                     std::cout<<sizeof(SDL_Surface*);
                     refresh();
