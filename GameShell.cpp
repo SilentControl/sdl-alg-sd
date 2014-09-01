@@ -94,10 +94,6 @@ void GameShell::loadMap()
             if(isItem(nr) == true)
             {
                 tile->setItem(true);
-                if(nr == 8)
-                    tile->object = new Healthpack();
-                else
-                    tile->object = new Armor();
             }
 
             layer.push_back(tile);
@@ -195,18 +191,21 @@ void GameShell::action()
                 {
                     bob.inventory.head->val->use(bob);
                     bob.inventory.draw(bkgtiles, tileset, screen, 9);
+                    refresh();
                 }
 
                 if(actions.left_inv_arrow == true)
                 {
-                    bob.inventory.moveLeft();
+                    bob.inventory.moveLeft(bkgtiles, tileset, screen);
                     bob.inventory.draw(bkgtiles, tileset, screen, 9);
+                    refresh();
                 }
 
                 if(actions.right_inv_arrow == true)
                 {
-                    bob.inventory.moveRight();
+                    bob.inventory.moveRight(bkgtiles, tileset, screen);
                     bob.inventory.draw(bkgtiles, tileset, screen, 9);
+                    refresh();
                 }
 
                 refresh();
@@ -216,9 +215,6 @@ void GameShell::action()
                 if((tiles[layer_numb][tile_numb])->hasItem() == true)
                 {
                     bob.pick(tiles[layer_numb][tile_numb]);
-
-                    delete (tiles[layer_numb][tile_numb])->object;
-                    (tiles[layer_numb][tile_numb])->object = NULL;
                     int type = (tiles[layer_numb][tile_numb])->type;
                     (tiles[layer_numb][tile_numb])->type = TRANSPARENCY;
 

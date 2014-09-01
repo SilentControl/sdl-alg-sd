@@ -1,5 +1,6 @@
 #include "Inventory.h"
 #include "GameShell.h"
+#include <iostream>
 
 Node::Node() {}
 Node::~Node() {}
@@ -67,14 +68,18 @@ void Inventory::Delete () {
 
 void Inventory::Print() {}
 
-void Inventory::moveLeft() {
+void Inventory::moveLeft(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen) {
     if (cursor->prev != NULL)
         cursor = cursor->prev;
+    std::cout << cursor->val->type << "\n";
+    draw(bkgtiles, tileset, screen, cursor->val->type);
 }
 
-void Inventory::moveRight() {
+void Inventory::moveRight(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen) {
     if (cursor->next != NULL)
         cursor = cursor->next;
+    std::cout << cursor->val->type << "\n";
+   draw(bkgtiles, tileset, screen, cursor->val->type);
 }
 
 Inventory::~Inventory() {

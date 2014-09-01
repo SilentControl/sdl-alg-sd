@@ -1,5 +1,6 @@
 #include "EventHandler.h"
 #include "GameShell.h"
+#include <iostream>
 
 EventHandler::EventHandler()
 {
@@ -65,8 +66,15 @@ void EventHandler::handleEvents()
         {
             int x = event.motion.x;
             int y = event.motion.y;
+            std::cout << "X = " << x << " " << "Y = " << y << "\n";
             if(x >= 14 * TILE_WIDTH && x < 15 * TILE_WIDTH && y >= 0 && y < TILE_HEIGHT)
                 use_item = true;
+            else
+            if(x >= 13 * TILE_WIDTH && x < 14 * TILE_WIDTH && y >= 0 && y < TILE_HEIGHT)
+                left_inv_arrow = true;
+            else
+            if(x >= 15 * TILE_WIDTH && x < 16 * TILE_WIDTH && y >= 0 && y < TILE_HEIGHT)
+                right_inv_arrow = true;
         }
     }
 }
