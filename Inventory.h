@@ -25,8 +25,8 @@ public:
     void insert (Item* val);
     void Delete ();
     void Print();
-    void moveLeft();
-    void moveRight();
+    void moveLeft(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen);
+    void moveRight(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen);
     void draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen, int type);
     ~Inventory();
 };

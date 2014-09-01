@@ -1,5 +1,7 @@
 #include "Player.h"
 #include "GameShell.h"
+#include "Armor.h"
+#include "Healthpack.h"
 #include <iostream>
 
 Player::Player(){
@@ -24,7 +26,10 @@ void Player::draw(SDL_Surface* screen)
 
 void Player::pick(Tile*& tile) {
     if (tile->hasItem()) {
-        inventory.insert(tile->object);
+        if(tile->type == 8)
+            inventory.insert(new Healthpack());
+        else
+            inventory.insert(new Armor());
         tile->setItem(false);
     }
 }

@@ -8,7 +8,6 @@ Tile::Tile(int x, int y) {
 
     item = false;
     transparency = false;
-    object = NULL;
 }
 
 bool Tile::hasItem() {
@@ -33,6 +32,4 @@ int Tile::getLayer() {
 
 Tile::~Tile()
 {
-    if(object != NULL)
-        delete object;
 }

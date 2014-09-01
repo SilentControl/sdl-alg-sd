@@ -11,7 +11,6 @@ public:
     SDL_Rect coord;
     int id;
     int type;
-    Item* object;
 
     Tile(int x, int y);
     bool hasItem();

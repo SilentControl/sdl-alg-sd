@@ -3,6 +3,7 @@
 
 Healthpack::Healthpack()
 {
+    type = 8;
 	heal = 10;
 	image = SDL_LoadBMP("medikit.bmp");
 }

@@ -4,6 +4,7 @@
 Armor::Armor()
 {
     // player will be immune to the following three enemy attacks
+    type = 10;
 	attacks = 3;
 	image = SDL_LoadBMP("heavyarmor_d.bmp");
 }
