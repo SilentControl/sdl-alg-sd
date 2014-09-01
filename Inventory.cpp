@@ -38,6 +38,7 @@ void Inventory::draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, S
     dest.x += 2 * TILE_WIDTH;
     SDL_BlitSurface(tileset, &bkgtiles[7], screen, &dest);
     dest.x -= TILE_WIDTH;
+    SDL_BlitSurface(tileset, &bkgtiles[2], screen, &dest); // redraw the background tile of the item
     SDL_BlitSurface(tileset, &bkgtiles[type], screen, &dest);
 }
 
@@ -79,7 +80,7 @@ void Inventory::moveRight(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tiles
     if (cursor->next != NULL)
         cursor = cursor->next;
     std::cout << cursor->val->type << "\n";
-   draw(bkgtiles, tileset, screen, cursor->val->type);
+    draw(bkgtiles, tileset, screen, cursor->val->type);
 }
 
 Inventory::~Inventory() {
