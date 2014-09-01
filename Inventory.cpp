@@ -28,7 +28,7 @@ void Inventory::insert (Item* val) {
 
 }
 
-void Inventory::draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen)
+void Inventory::draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen, int type)
 {
     SDL_Rect dest;
     dest.x = 13 * TILE_WIDTH;
@@ -37,7 +37,7 @@ void Inventory::draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, S
     dest.x += 2 * TILE_WIDTH;
     SDL_BlitSurface(tileset, &bkgtiles[7], screen, &dest);
     dest.x -= TILE_WIDTH;
-    SDL_BlitSurface(tileset, &bkgtiles[8], screen, &dest);
+    SDL_BlitSurface(tileset, &bkgtiles[type], screen, &dest);
 }
 
 

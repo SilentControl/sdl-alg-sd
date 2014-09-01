@@ -27,7 +27,7 @@ public:
     void Print();
     void moveLeft();
     void moveRight();
-    void draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen);
+    void draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen, int type);
     ~Inventory();
 };
 
