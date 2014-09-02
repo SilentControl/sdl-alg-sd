@@ -6,8 +6,7 @@ Node::Node() {}
 Node::~Node() {}
 
 Inventory::Inventory(){
-    head = NULL;
-    cursor = new Node();
+  cursor = head = NULL;
 }
 
 void Inventory::insert (Item* val) {
@@ -23,10 +22,10 @@ void Inventory::insert (Item* val) {
         Node* temp = new Node();
         temp->val = val;
         temp->next = head;
+        temp->prev = NULL;
         head->prev = temp;
         head = temp;
     }
-
 }
 
 void Inventory::draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen, int type)
@@ -70,17 +69,27 @@ void Inventory::Delete () {
 void Inventory::Print() {}
 
 void Inventory::moveLeft(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen) {
-    if (cursor->prev != NULL)
-        cursor = cursor->prev;
-    std::cout << cursor->val->type << "\n";
-    draw(bkgtiles, tileset, screen, cursor->val->type);
+    if(cursor != NULL)
+    {
+        if (cursor->prev != NULL)
+        {
+            cursor = cursor->prev;
+            std::cout << cursor->val->type << "\n";
+            draw(bkgtiles, tileset, screen, cursor->val->type);
+        }
+    }
 }
 
 void Inventory::moveRight(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, SDL_Surface*& screen) {
-    if (cursor->next != NULL)
-        cursor = cursor->next;
-    std::cout << cursor->val->type << "\n";
-    draw(bkgtiles, tileset, screen, cursor->val->type);
+    if(cursor != NULL)
+    {
+        if (cursor->next != NULL)
+        {
+            cursor = cursor->next;
+            std::cout << cursor->val->type << "\n";
+            draw(bkgtiles, tileset, screen, cursor->val->type);
+        }
+    }
 }
 
 Inventory::~Inventory() {
