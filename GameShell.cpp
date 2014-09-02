@@ -227,8 +227,6 @@ void GameShell::action()
                     repaintTile(dest);
 
                     bob.inventory.draw(bkgtiles, tileset, screen, type);
-
-                    std::cout<<sizeof(SDL_Surface*);
                     refresh();
                 }
             }

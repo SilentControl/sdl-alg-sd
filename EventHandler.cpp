@@ -19,6 +19,7 @@ void EventHandler::reset()
 {
     direction.x = direction.y = 0;
     use_item = false;
+    left_inv_arrow = right_inv_arrow = false;
 }
 
 void EventHandler::handleEvents()
