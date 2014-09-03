@@ -14,6 +14,9 @@ public:
 
     // health
     unsigned int health;
+    SDL_Rect frame[4][2];
+
+    int last_frame;
 
     // player's coordinates on the board
     SDL_Rect coord;

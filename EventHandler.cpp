@@ -5,6 +5,7 @@
 EventHandler::EventHandler()
 {
     direction.x = direction.y = 0;
+    direction.w = 0;
     quit = false;
     use_item = false;
     right_inv_arrow = false;
@@ -17,7 +18,7 @@ EventHandler::~EventHandler()
 
 void EventHandler::reset()
 {
-    direction.x = direction.y = 0;
+    direction.x = direction.y = direction.w = 0;
     use_item = false;
     left_inv_arrow = right_inv_arrow = false;
 }
@@ -39,18 +40,22 @@ void EventHandler::handleEvents()
                 case SDLK_UP:
                     direction.x = 0;
                     direction.y = -1;
+                    direction.w = 0;
                     break;
                 case SDLK_DOWN:
                     direction.x = 0;
                     direction.y = 1;
+                    direction.w = 2;
                     break;
                 case SDLK_RIGHT:
                     direction.x = 1;
                     direction.y = 0;
+                    direction.w = 1;
                     break;
                 case SDLK_LEFT:
                     direction.x = -1;
                     direction.y = 0;
+                    direction.w = 3;
                     break;
                 case SDLK_q:
                     quit = true;

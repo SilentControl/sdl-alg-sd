@@ -178,7 +178,7 @@ void GameShell::action()
                         }
 
                         // update the player's lifebar
-                        //updateLifebar(screen);
+                        updateLifebar(screen);
                     }
                 }
 
@@ -191,21 +191,19 @@ void GameShell::action()
                 {
                     bob.inventory.head->val->use(bob);
                     bob.inventory.draw(bkgtiles, tileset, screen, bob.inventory.cursor->val->type);
-                    refresh();
+                    updateLifebar(screen);
                 }
 
                 if(actions.left_inv_arrow == true)
                 {
                     bob.inventory.moveLeft(bkgtiles, tileset, screen);
                     bob.inventory.draw(bkgtiles, tileset, screen, bob.inventory.cursor->val->type);
-                    refresh();
                 }
 
                 if(actions.right_inv_arrow == true)
                 {
                     bob.inventory.moveRight(bkgtiles, tileset, screen);
                     bob.inventory.draw(bkgtiles, tileset, screen,  bob.inventory.cursor->val->type);
-                    refresh();
                 }
 
                 refresh();
@@ -231,7 +229,7 @@ void GameShell::action()
                 }
             }
 
-            updateLifebar(screen);
+
             actions.reset();
         }
 

@@ -16,7 +16,10 @@ Healthpack::~Healthpack()
 
 void Healthpack::use(Player& player)
 {
-	player.health = (player.health + heal) % 101;
+    if(player.health + heal > 100)
+        player.health = 100;
+    else
+        player.health += heal;
 	std::cout<<"HEALTH = " << player.health<<"\n";
 }
 

@@ -11,17 +11,30 @@ Player::Player(){
     Uint32 color = SDL_MapRGB(image->format, 0xFF, 0x00, 0xFF);
     SDL_SetColorKey(image, SDL_TRUE, color);
     health = 100;
+    last_frame = 0;
+    for(int i = 0; i < 4; i++)
+    {
+        frame[i][0].w = frame[i][1].w = TILE_WIDTH;
+        frame[i][0].h = frame[i][1].h = TILE_HEIGHT;
+
+        frame[i][0].x = i * TILE_WIDTH;
+        frame[i][0].y = 0;
+
+        frame[i][1].x = i * TILE_WIDTH;
+        frame[i][1].y = TILE_HEIGHT;
+    }
 }
 
 void Player::move(SDL_Rect& direction, SDL_Surface* screen) {
     coord.x += direction.x * TILE_WIDTH;
     coord.y += direction.y * TILE_HEIGHT;
-    SDL_BlitSurface(image, &position, screen, &coord);
+    last_frame = direction.w;
+    SDL_BlitSurface(image, &frame[direction.w][0], screen, &coord);
 }
 
 void Player::draw(SDL_Surface* screen)
 {
-    SDL_BlitSurface(image, &position, screen, &coord);
+    SDL_BlitSurface(image, &frame[last_frame][0], screen, &coord);
 }
 
 void Player::pick(Tile*& tile) {
