@@ -7,6 +7,8 @@ public:
     // unique enemy ID
     unsigned int id;
     unsigned int damage;
+    SDL_Rect frames[4];
+    int last_frame;
 
     // enemy's coordinates on the board
     SDL_Rect coord;
