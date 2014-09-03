@@ -1,5 +1,6 @@
 #include "Healthpack.h"
 #include "GameShell.h"
+#include <iostream>
 
 Healthpack::Healthpack()
 {
@@ -15,7 +16,8 @@ Healthpack::~Healthpack()
 
 void Healthpack::use(Player& player)
 {
-	player.health = (player.health + heal) % 100;
+	player.health = (player.health + heal) % 101;
+	std::cout<<"HEALTH = " << player.health<<"\n";
 }
 
 void Healthpack::draw(SDL_Surface* screen, SDL_Rect& dest)

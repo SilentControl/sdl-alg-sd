@@ -178,7 +178,7 @@ void GameShell::action()
                         }
 
                         // update the player's lifebar
-                        updateLifebar(screen);
+                        //updateLifebar(screen);
                     }
                 }
 
@@ -190,21 +190,21 @@ void GameShell::action()
                 if(actions.use_item == true)
                 {
                     bob.inventory.head->val->use(bob);
-                    bob.inventory.draw(bkgtiles, tileset, screen, 9);
+                    bob.inventory.draw(bkgtiles, tileset, screen, bob.inventory.cursor->val->type);
                     refresh();
                 }
 
                 if(actions.left_inv_arrow == true)
                 {
                     bob.inventory.moveLeft(bkgtiles, tileset, screen);
-                    bob.inventory.draw(bkgtiles, tileset, screen, 9);
+                    bob.inventory.draw(bkgtiles, tileset, screen, bob.inventory.cursor->val->type);
                     refresh();
                 }
 
                 if(actions.right_inv_arrow == true)
                 {
                     bob.inventory.moveRight(bkgtiles, tileset, screen);
-                    bob.inventory.draw(bkgtiles, tileset, screen, 9);
+                    bob.inventory.draw(bkgtiles, tileset, screen,  bob.inventory.cursor->val->type);
                     refresh();
                 }
 
@@ -231,6 +231,7 @@ void GameShell::action()
                 }
             }
 
+            updateLifebar(screen);
             actions.reset();
         }
 
@@ -247,10 +248,10 @@ void GameShell::action()
             refresh();
         }
 
-		if(1000/FPS > SDL_GetTicks() - start)
-		{
-			SDL_Delay(1000/FPS - (SDL_GetTicks() - start));
-		}
+        if(1000/FPS > SDL_GetTicks() - start)
+        {
+            SDL_Delay(1000/FPS - (SDL_GetTicks() - start));
+        }
     }
 }
 
