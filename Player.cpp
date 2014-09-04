@@ -5,11 +5,14 @@
 #include <iostream>
 
 Player::Player(){
-    image = SDL_LoadBMP("hostages.bmp");
+    basic_player = SDL_LoadBMP("hostages.bmp");
+    armored_player = SDL_LoadBMP("armor.bmp");
+    image = basic_player;
     position = {0, 0, TILE_HEIGHT, TILE_WIDTH};
     coord = {0, 0, 0, 0};
     Uint32 color = SDL_MapRGB(image->format, 0xFF, 0x00, 0xFF);
-    SDL_SetColorKey(image, SDL_TRUE, color);
+    SDL_SetColorKey(basic_player, SDL_TRUE, color);
+    SDL_SetColorKey(armored_player, SDL_TRUE, color);
     health = 100;
     invulnerable = 0;
     last_frame = 0;
@@ -35,6 +38,10 @@ void Player::move(SDL_Rect& direction, SDL_Surface* screen) {
 
 void Player::draw(SDL_Surface* screen)
 {
+    if(invulnerable <= 0)
+    {
+        equip_armor(false);
+    }
     SDL_BlitSurface(image, &frame[last_frame][0], screen, &coord);
 }
 
@@ -49,6 +56,19 @@ void Player::pick(Tile*& tile) {
 }
 
 Player::~Player(){
-    SDL_FreeSurface(image);
+    SDL_FreeSurface(basic_player);
+    SDL_FreeSurface(armored_player);
     image = NULL;
+}
+
+void Player::equip_armor(bool value)
+{
+    if(value == true)
+    {
+        image = armored_player;
+    }
+    else
+    {
+        image = basic_player;
+    }
 }

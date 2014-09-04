@@ -17,6 +17,7 @@ Armor::~Armor()
 void Armor::use(Player& player)
 {
 	player.invulnerable = attacks;
+	player.equip_armor(true);
 }
 
 void Armor::draw(SDL_Surface* screen, SDL_Rect& dest)
