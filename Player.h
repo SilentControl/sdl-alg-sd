@@ -27,6 +27,8 @@ public:
     // player's position within the image
     SDL_Rect position;
 
+    unsigned int invulnerable;
+
     Inventory inventory;
 
     Player();

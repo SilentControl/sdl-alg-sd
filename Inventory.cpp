@@ -38,7 +38,10 @@ void Inventory::draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, S
     SDL_BlitSurface(tileset, &bkgtiles[7], screen, &dest);
     dest.x -= TILE_WIDTH;
     SDL_BlitSurface(tileset, &bkgtiles[2], screen, &dest); // redraw the background tile of the item
-    SDL_BlitSurface(tileset, &bkgtiles[type], screen, &dest);
+    if (cursor != NULL)
+        SDL_BlitSurface(tileset, &bkgtiles[type], screen, &dest);
+    else
+        SDL_BlitSurface(tileset, &bkgtiles[9], screen, &dest);
     std::cout<<"Drew type = " <<type<<"\n";
 }
 
