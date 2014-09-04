@@ -189,7 +189,11 @@ void GameShell::action()
             {
                 if(actions.use_item == true)
                 {
-                    bob.inventory.head->val->use(bob);
+                    if (bob.inventory.cursor != NULL)
+                    {
+                        bob.inventory.cursor->val->use(bob);
+                        bob.inventory.Delete();
+                    }
                     bob.inventory.draw(bkgtiles, tileset, screen, bob.inventory.cursor->val->type);
                     updateLifebar(screen);
                 }
@@ -259,7 +263,11 @@ bool GameShell::deductHealth(unsigned int value)
         return true;
     else
     {
-        bob.health -= value;
+        if (bob.invulnerable > 0)
+            bob.invulnerable--;
+        else
+            bob.health -= value;
+
         if(bob.health <= 0)
             return true;
         else

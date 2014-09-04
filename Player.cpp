@@ -11,6 +11,7 @@ Player::Player(){
     Uint32 color = SDL_MapRGB(image->format, 0xFF, 0x00, 0xFF);
     SDL_SetColorKey(image, SDL_TRUE, color);
     health = 100;
+    invulnerable = 0;
     last_frame = 0;
     for(int i = 0; i < 4; i++)
     {
