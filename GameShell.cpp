@@ -193,18 +193,22 @@ void GameShell::action()
                     {
                         bob.inventory.cursor->val->use(bob);
                         bob.inventory.Delete();
+                        if (bob.inventory.cursor != NULL)
+                            bob.inventory.draw(bkgtiles, tileset, screen, bob.inventory.cursor->val->type);
+                        else
+                            bob.inventory.draw(bkgtiles, tileset, screen, 9);
                     }
-                    bob.inventory.draw(bkgtiles, tileset, screen, bob.inventory.cursor->val->type);
+
                     updateLifebar(screen);
                 }
 
-                if(actions.left_inv_arrow == true)
+                if(actions.left_inv_arrow == true && bob.inventory.cursor != NULL)
                 {
                     bob.inventory.moveLeft(bkgtiles, tileset, screen);
                     bob.inventory.draw(bkgtiles, tileset, screen, bob.inventory.cursor->val->type);
                 }
 
-                if(actions.right_inv_arrow == true)
+                if(actions.right_inv_arrow == true && bob.inventory.cursor != NULL)
                 {
                     bob.inventory.moveRight(bkgtiles, tileset, screen);
                     bob.inventory.draw(bkgtiles, tileset, screen,  bob.inventory.cursor->val->type);

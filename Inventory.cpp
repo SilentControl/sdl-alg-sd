@@ -25,6 +25,7 @@ void Inventory::insert (Item* val) {
         temp->prev = NULL;
         head->prev = temp;
         head = temp;
+        cursor = head;
     }
 }
 
@@ -42,6 +43,7 @@ void Inventory::draw(std::map<int, SDL_Rect>& bkgtiles, SDL_Surface*& tileset, S
         SDL_BlitSurface(tileset, &bkgtiles[type], screen, &dest);
     else
         SDL_BlitSurface(tileset, &bkgtiles[9], screen, &dest);
+
     std::cout<<"Drew type = " <<type<<"\n";
 }
 
