@@ -24,6 +24,9 @@ public:
     // the original image whence we will extract the player
     SDL_Surface* image;
 
+    SDL_Surface* basic_player;
+    SDL_Surface* armored_player;
+
     // player's position within the image
     SDL_Rect position;
 
@@ -37,6 +40,7 @@ public:
     void move(SDL_Rect& direction, SDL_Surface* screen);
     void draw(SDL_Surface* screen);
     void pick(Tile*& tile);
+    void equip_armor(bool value);
     ~Player();
 };
 
