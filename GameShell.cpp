@@ -152,6 +152,20 @@ void GameShell::action()
                 {
                     repaintTile(bob.coord);
                     bob.move(actions.direction, screen);
+                    repaintTile(zombie.coord);
+                    Tile* t = findPath(tiles[0][(zombie.coord.x + zombie.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32],
+                                       tiles[0][(bob.coord.x + bob.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32]);
+
+
+                    if (t == NULL)
+                        std::cout << "t e NULL :(\n";
+                    else
+                    {
+                        zombie.coord.x = t->coord.x;
+                        zombie.coord.y = t->coord.y;
+                    }
+                    //old method
+                    /*
                     SDL_Rect temp = zombie.move(screen);
                     repaintTile(zombie.coord);
 
@@ -160,6 +174,7 @@ void GameShell::action()
                         zombie.coord.x += temp.x * TILE_WIDTH;
                         zombie.coord.y += temp.y * TILE_HEIGHT;
                     }
+                    */
                     zombie.draw(screen);
                     bob.draw(screen);
 
@@ -360,4 +375,70 @@ bool GameShell::isItem(int value)
         }
     }
     return false;
+}
+
+Tile* GameShell::findPath(Tile*& start, Tile*& goal) {
+    mark();
+    int DIM = (SCREEN_WIDTH / TILE_WIDTH);
+    std::queue<Tile*> q;
+    q.push(start);
+    Tile* current = new Tile(0,0);
+    while (!q.empty())
+    {
+        current = q.front();
+        q.pop();
+        current->marked = true;
+        if (current == goal)
+            break;
+        //right
+        int index = (current->id) / DIM;
+        if ( index == current->coord.y / TILE_HEIGHT && index <= tiles[0].size() && (tiles[0][current->id])->type != 2 && (tiles[0][current->id])->marked == false)
+        {
+            q.push(tiles[0][current->id]);
+            (tiles[0][current->id])->previous = current;
+        }
+        //left
+        index = (current->id - 2) / DIM;
+        if ( index == current->coord.y / TILE_HEIGHT && index >= 1 && (tiles[0][current->id - 2])->type != 2 && (tiles[0][current->id - 2])->marked == false)
+        {
+            q.push(tiles[0][current->id - 2]);
+            (tiles[0][current->id - 2])->previous = current;
+        }
+        //up
+        index = current->id - 1 + DIM;
+        if (index < tiles[0].size() && (tiles[0][current->id - 1 + DIM])->type != 2 && (tiles[0][current->id - 1 + DIM])->marked == false)
+        {
+            q.push(tiles[0][current->id - 1 + DIM]);
+            (tiles[0][current->id - 1 + DIM])->previous = current;
+        }
+        //down
+        index = current->id - 1 - DIM;
+        if (index >= 1 && (tiles[0][current->id - 1 - DIM])->type != 2 && (tiles[0][current->id - 1 - DIM])->marked == false)
+        {
+            q.push(tiles[0][current->id - 1 - DIM]);
+            (tiles[0][current->id - 1 - DIM])->previous = current;
+        }
+
+    }
+
+    //reverting the path
+    Tile* temp = current;
+    Tile* prev =  NULL;
+
+    while (temp != start)
+    {
+        Tile* aux = temp->previous;
+        temp->previous = prev;
+        prev = temp;
+        temp = aux;
+    }
+
+    return prev;
+
+}
+
+void GameShell::mark()
+{
+    for (int i = 0, n = tiles[0].size(); i < n; i++)
+            tiles[0][i]->marked = false;
 }
