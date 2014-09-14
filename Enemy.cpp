@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-
+#include <queue>
 
 Enemy::Enemy(){
     image = SDL_LoadBMP("zombie.bmp");

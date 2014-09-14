@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <vector>
 #include <map>
+#include <queue>
 #include "Player.h"
 #include "CollisionDetector.h"
 #include "EventHandler.h"
@@ -49,6 +50,8 @@ struct GameShell
     bool isItem(int value);
     void updateLifebar(SDL_Surface* screen);
     void gameOver();
+    Tile* findPath(Tile*& start, Tile*& goal);
+    void mark();
 
 };
 
