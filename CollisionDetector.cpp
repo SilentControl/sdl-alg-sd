@@ -18,7 +18,7 @@ bool CollisionDetector::detect(SDL_Rect& playerPos, SDL_Rect& direction, std::ve
 	int index_x = (playerPos.x + TILE_WIDTH * direction.x) / TILE_WIDTH;
 	int index_y = (playerPos.y + TILE_HEIGHT * direction.y) / TILE_HEIGHT;
 
-    if(index >= 0 && index < tiles[0].size())
+    if(index >= 0 && index < (int)tiles[0].size())
     {
         if(tiles[0][index]->type == 2)
             return true;
@@ -31,10 +31,8 @@ bool CollisionDetector::detect(SDL_Rect& playerPos, SDL_Rect& direction, std::ve
     {
         return true;
     }
-	else
-	{
-		return false;
-	}
+
+	return false;
 }
 
 //Comment

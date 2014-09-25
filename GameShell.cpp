@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 GameShell::GameShell()
 {
@@ -79,6 +80,14 @@ void GameShell::loadMap()
         for(int j = 0; j < MAXTILES; j++)
         {
             mapfile >> nr;
+            if(nr == 1)
+            {
+                int posx = nr % (SCREEN_WIDTH / TILE_WIDTH);
+                int posy = nr / (SCREEN_WIDTH / TILE_WIDTH);
+                exit.x = posx * TILE_WIDTH;
+                exit.y = posy * TILE_HEIGHT;
+            }
+
             srctile = bkgtiles[nr];
             destile.x += TILE_WIDTH;
 
@@ -153,28 +162,34 @@ void GameShell::action()
                     repaintTile(bob.coord);
                     bob.move(actions.direction, screen);
                     repaintTile(zombie.coord);
-                    Tile* t = findPath(tiles[0][(zombie.coord.x + zombie.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32],
+
+                    if(near_exit(bob) == true) // The zombie will start the chase
+                    {
+                        Tile* t = findPath(tiles[0][(zombie.coord.x + zombie.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32],
                                        tiles[0][(bob.coord.x + bob.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32]);
 
 
-                    if (t == NULL)
-                        std::cout << "t e NULL :(\n";
-                    else
-                    {
-                        zombie.coord.x = t->coord.x;
-                        zombie.coord.y = t->coord.y;
+                        if (t == NULL)
+                            std::cout << "t e NULL :(\n";
+                        else
+                        {
+                            zombie.coord.x = t->coord.x;
+                            zombie.coord.y = t->coord.y;
+                        }
                     }
-                    //old method
-                    /*
-                    SDL_Rect temp = zombie.move(screen);
-                    repaintTile(zombie.coord);
 
-                    if (col->detect(zombie.coord, temp, tiles) == false)
+                    else // The zombie will patrol
                     {
-                        zombie.coord.x += temp.x * TILE_WIDTH;
-                        zombie.coord.y += temp.y * TILE_HEIGHT;
+                        SDL_Rect temp = zombie.move(screen);
+                        repaintTile(zombie.coord);
+
+                        if (col->detect(zombie.coord, temp, tiles) == false)
+                        {
+                            zombie.coord.x += temp.x * TILE_WIDTH;
+                            zombie.coord.y += temp.y * TILE_HEIGHT;
+                        }
                     }
-                    */
+
                     zombie.draw(screen);
                     bob.draw(screen);
 
@@ -392,7 +407,7 @@ Tile* GameShell::findPath(Tile*& start, Tile*& goal) {
             break;
         //right
         int index = (current->id) / DIM;
-        if ( index == current->coord.y / TILE_HEIGHT && index <= tiles[0].size() && (tiles[0][current->id])->type != 2 && (tiles[0][current->id])->marked == false)
+        if ( index == current->coord.y / TILE_HEIGHT && index <= (int)tiles[0].size() && (tiles[0][current->id])->type != 2 && (tiles[0][current->id])->marked == false)
         {
             q.push(tiles[0][current->id]);
             (tiles[0][current->id])->previous = current;
@@ -406,7 +421,7 @@ Tile* GameShell::findPath(Tile*& start, Tile*& goal) {
         }
         //up
         index = current->id - 1 + DIM;
-        if (index < tiles[0].size() && (tiles[0][current->id - 1 + DIM])->type != 2 && (tiles[0][current->id - 1 + DIM])->marked == false)
+        if (index < (int)tiles[0].size() && (tiles[0][current->id - 1 + DIM])->type != 2 && (tiles[0][current->id - 1 + DIM])->marked == false)
         {
             q.push(tiles[0][current->id - 1 + DIM]);
             (tiles[0][current->id - 1 + DIM])->previous = current;
@@ -441,4 +456,17 @@ void GameShell::mark()
 {
     for (int i = 0, n = tiles[0].size(); i < n; i++)
             tiles[0][i]->marked = false;
+}
+
+bool GameShell::near_exit(Player& player)
+{
+    int xfinish = exit.x / TILE_WIDTH;
+    int yfinish = exit.y / TILE_HEIGHT;
+
+    int xpos = player.coord.x / TILE_WIDTH;
+    int ypos = player.coord.y / TILE_HEIGHT;
+
+    if(std::abs(xfinish - xpos) + std::abs(yfinish - ypos) <= CHASE_TRIGGER)
+        return true;
+    return false;
 }
