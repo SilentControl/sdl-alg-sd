@@ -19,7 +19,8 @@ const int BAR_WIDTH = 100;
 const int FPS = 30;
 const int MAXTILES = 300;
 const int TRANSPARENCY = 9;
-const int CHASE_TRIGGER = 3;
+const int CHASE_TRIGGER = 6;
+const int ENEMY_PROXIMITY = 6;
 
 class Tile;
 struct CollisionDetector;
@@ -54,6 +55,7 @@ struct GameShell
     Tile* findPath(Tile*& start, Tile*& goal);
     void mark();
     bool near_exit(Player& player);
+    bool near_player(Player& player);
     SDL_Rect exit;
 };
 

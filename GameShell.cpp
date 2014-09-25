@@ -164,7 +164,7 @@ void GameShell::action()
                     bob.move(actions.direction, screen);
                     repaintTile(zombie.coord);
 
-                    if(near_exit(bob) == true) // The zombie will start the chase
+                    if(near_exit(bob) == true || near_player(bob) == true) // The zombie will start the chase
                     {
                         Tile* t = findPath(tiles[0][(zombie.coord.x + zombie.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32],
                                        tiles[0][(bob.coord.x + bob.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32]);
@@ -470,6 +470,20 @@ bool GameShell::near_exit(Player& player)
     std::cout << "Manhattan: " << std::abs(xfinish - xpos) + std::abs(yfinish - ypos) << "\n";
 
     if(std::abs(xfinish - xpos) + std::abs(yfinish - ypos) <= CHASE_TRIGGER)
+        return true;
+    return false;
+}
+
+bool GameShell::near_player(Player& player)
+{
+    int xenem = zombie.coord.x / TILE_WIDTH;
+    int yenem = zombie.coord.y / TILE_HEIGHT;
+
+    int xplayer = player.coord.x / TILE_WIDTH;
+    int yplayer = player.coord.y / TILE_HEIGHT;
+
+    std::cout << "Manhattan_zombie: " << std::abs(xenem - xplayer) + std::abs(yenem - yplayer) << "\n";
+    if(std::abs(xenem - xplayer) + std::abs(yenem - yplayer) <= ENEMY_PROXIMITY)
         return true;
     return false;
 }
