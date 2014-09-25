@@ -82,10 +82,11 @@ void GameShell::loadMap()
             mapfile >> nr;
             if(nr == 1)
             {
-                int posx = nr % (SCREEN_WIDTH / TILE_WIDTH);
-                int posy = nr / (SCREEN_WIDTH / TILE_WIDTH);
+                int posx = j % (SCREEN_WIDTH / TILE_WIDTH);
+                int posy = j / (SCREEN_WIDTH / TILE_WIDTH);
                 exit.x = posx * TILE_WIDTH;
                 exit.y = posy * TILE_HEIGHT;
+                std::cout<<"XEXIT = " <<exit.x <<" "<<"YEXIT = " << exit.y<<"\n";
             }
 
             srctile = bkgtiles[nr];
@@ -465,6 +466,8 @@ bool GameShell::near_exit(Player& player)
 
     int xpos = player.coord.x / TILE_WIDTH;
     int ypos = player.coord.y / TILE_HEIGHT;
+
+    std::cout << "Manhattan: " << std::abs(xfinish - xpos) + std::abs(yfinish - ypos) << "\n";
 
     if(std::abs(xfinish - xpos) + std::abs(yfinish - ypos) <= CHASE_TRIGGER)
         return true;
