@@ -33,6 +33,7 @@ struct GameShell
     SDL_Surface* tileset;
     SDL_Surface* gameover;
     SDL_Surface* lifebar;
+    SDL_Surface* gamewon;
     std::map<int, SDL_Rect> bkgtiles;
     std::vector<SDL_Rect> bartype;
     std::vector<std::vector<Tile*> > tiles;
@@ -52,6 +53,7 @@ struct GameShell
     bool isItem(int value);
     void updateLifebar(SDL_Surface* screen);
     void gameOver();
+    void gameWon();
     Tile* findPath(Tile*& start, Tile*& goal);
     void mark();
     bool near_exit(Player& player);

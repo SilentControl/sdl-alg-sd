@@ -16,11 +16,13 @@ GameShell::GameShell()
     tileset = SDL_LoadBMP("tileset.bmp");
     lifebar = SDL_LoadBMP("lifebar.bmp");
     gameover = SDL_LoadBMP("gover.bmp");
+    gamewon = SDL_LoadBMP("gwin.bmp");
 
     Uint32 color = SDL_MapRGB(lifebar->format, 0xFF, 0x00, 0xFF);
     SDL_SetColorKey(lifebar, SDL_TRUE, color);
     SDL_SetColorKey(gameover, SDL_TRUE, color);
     SDL_SetColorKey(tileset, SDL_TRUE, color);
+    SDL_SetColorKey(gamewon, SDL_TRUE, color);
     SDL_Rect tile;
     tile.x = tile.y = 0;
     tile.w = tile.h = TILE_HEIGHT;
@@ -163,53 +165,92 @@ void GameShell::action()
                     repaintTile(bob.coord);
                     bob.move(actions.direction, screen);
                     repaintTile(zombie.coord);
-
-                    if(near_exit(bob) == true || near_player(bob) == true) // The zombie will start the chase
+                    if(bob.coord.x == exit.x && bob.coord.y == exit.y)
                     {
-                        Tile* t = findPath(tiles[0][(zombie.coord.x + zombie.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32],
+                        gameWon();
+                        playing = false;
+                    }
+
+                    else
+                    {
+                        if(near_exit(bob) == true || near_player(bob) == true) // The zombie will start the chase
+                        {
+                            int zombie_old_x = zombie.coord.x;
+                            int zombie_old_y = zombie.coord.y;
+                            Tile* t = findPath(tiles[0][(zombie.coord.x + zombie.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32],
                                        tiles[0][(bob.coord.x + bob.coord.y * (SCREEN_WIDTH / TILE_WIDTH))/32]);
 
 
-                        if (t == NULL)
-                            std::cout << "t e NULL :(\n";
-                        else
-                        {
-                            zombie.coord.x = t->coord.x;
-                            zombie.coord.y = t->coord.y;
+                            if (t == NULL)
+                                std::cout << "t e NULL :(\n";
+                            else
+                            {
+                                // update zombie coordinates
+                                zombie.coord.x = t->coord.x;
+                                zombie.coord.y = t->coord.y;
+                                std::cout<< "PREV COORDS: X = " <<zombie_old_x<<" | Y = "<<zombie_old_y<<"\n";
+                                std::cout<< "NEW COORDS: X = " <<zombie.coord.x<<" | Y = "<<zombie.coord.y<<"\n";
+
+
+                                // set the frame according to the direction
+                                if(zombie.coord.x - zombie_old_x == TILE_WIDTH)
+                                {
+                                    zombie.last_frame = 1;
+                                    std::cout<<"RIGHT\n";
+                                }
+                                else
+                                if(zombie.coord.x - zombie_old_x == -TILE_WIDTH)
+                                {
+                                    zombie.last_frame = 3;
+                                    std::cout<<"LEFT\n";
+                                }
+                                else
+                                if(zombie.coord.y - zombie_old_y == -TILE_HEIGHT)
+                                {
+                                    zombie.last_frame = 0;
+                                    std::cout<<"UP\n";
+                                }
+                                else
+                                if(zombie.coord.y - zombie_old_y == TILE_HEIGHT)
+                                {
+                                    zombie.last_frame = 2;
+                                    std::cout<<"DOWN\n";
+                                }
+                            }
                         }
-                    }
 
-                    else // The zombie will patrol
-                    {
-                        SDL_Rect temp = zombie.move(screen);
-                        repaintTile(zombie.coord);
-
-                        if (col->detect(zombie.coord, temp, tiles) == false)
+                        else // The zombie will patrol
                         {
-                            zombie.coord.x += temp.x * TILE_WIDTH;
-                            zombie.coord.y += temp.y * TILE_HEIGHT;
-                        }
-                    }
+                            SDL_Rect temp = zombie.move(screen);
+                            repaintTile(zombie.coord);
 
-                    zombie.draw(screen);
-                    bob.draw(screen);
-
-                    // zombie attacks the player
-                    if(bob.coord.x == zombie.coord.x && bob.coord.y == zombie.coord.y)
-                    {
-                        deductHealth(zombie.damage);
-                        // repair the 3 tiles which are under the lifebar
-                        SDL_Rect repair;
-                        repair.x = (SCREEN_WIDTH - BAR_WIDTH) / 2 - 14;
-                        repair.y = 0;
-                        for(int i = 0; i < 4; i++)
-                        {
-                            repaintTile(repair);
-                            repair.x += TILE_WIDTH;
+                            if (col->detect(zombie.coord, temp, tiles) == false)
+                            {
+                                zombie.coord.x += temp.x * TILE_WIDTH;
+                                zombie.coord.y += temp.y * TILE_HEIGHT;
+                            }
                         }
 
-                        // update the player's lifebar
-                        updateLifebar(screen);
+                        zombie.draw(screen);
+                        bob.draw(screen);
+
+                        // zombie attacks the player
+                        if(bob.coord.x == zombie.coord.x && bob.coord.y == zombie.coord.y)
+                        {
+                            deductHealth(zombie.damage);
+                            // repair the 3 tiles which are under the lifebar
+                            SDL_Rect repair;
+                            repair.x = (SCREEN_WIDTH - BAR_WIDTH) / 2 - 14;
+                            repair.y = 0;
+                            for(int i = 0; i < 4; i++)
+                            {
+                                repaintTile(repair);
+                                repair.x += TILE_WIDTH;
+                            }
+
+                            // update the player's lifebar
+                            updateLifebar(screen);
+                        }
                     }
                 }
 
@@ -379,6 +420,27 @@ void GameShell::gameOver()
     goverpos.h = 55;
     goverpos.w = 480;
     SDL_BlitSurface(gameover, &goverpos, screen, &position);
+}
+
+void GameShell::gameWon()
+{
+    SDL_Rect fullscreen;
+    SDL_Rect position;
+    SDL_Rect goverpos;
+    fullscreen.x = fullscreen.y = 0;
+    fullscreen.h = SCREEN_HEIGHT;
+    fullscreen.w = SCREEN_WIDTH;
+    //Uint32 color = SDL_MapRGB(screen->format, 0x00, 0x00, 0x00);
+    //SDL_FillRect(screen, &fullscreen, color);
+    Uint8 alpha = 1;
+    SDL_SetSurfaceBlendMode(screen, SDL_BLENDMODE_BLEND);
+    SDL_SetSurfaceAlphaMod(screen, alpha);
+    position.x = 80;
+    position.y = 212;
+    goverpos.x = goverpos.y = 0;
+    goverpos.h = 55;
+    goverpos.w = 480;
+    SDL_BlitSurface(gamewon, &goverpos, screen, &position);
 }
 
 bool GameShell::isItem(int value)
