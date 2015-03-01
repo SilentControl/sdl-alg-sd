@@ -1,7 +1,7 @@
 sdl-alg-sd
 ==========
 
-An engine in SDL which uses some basic concepts about game developping.
+An engine in SDL which uses some basic concepts about game developing.
 
 Authors:  
 
