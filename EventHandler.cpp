@@ -1,5 +1,5 @@
 #include "EventHandler.h"
-#include "GameShell.h"
+#include "Gameshell.h"
 #include <iostream>
 
 EventHandler::EventHandler()

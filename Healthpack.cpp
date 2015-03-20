@@ -1,5 +1,5 @@
 #include "Healthpack.h"
-#include "GameShell.h"
+#include "Gameshell.h"
 #include <iostream>
 
 Healthpack::Healthpack()

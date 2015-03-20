@@ -1,6 +1,6 @@
 #ifndef _EVENTHANDLER_H_
 #define _EVENTHANDLER_H_
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 struct EventHandler
 {

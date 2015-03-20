@@ -1,5 +1,5 @@
 #include "Inventory.h"
-#include "GameShell.h"
+#include "Gameshell.h"
 #include <iostream>
 
 Node::Node() {}

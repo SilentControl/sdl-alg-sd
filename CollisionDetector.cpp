@@ -1,5 +1,5 @@
 #include "CollisionDetector.h"
-#include "GameShell.h"
+#include "Gameshell.h"
 #include <iostream>
 CollisionDetector::CollisionDetector()
 {

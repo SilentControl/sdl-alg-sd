@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "GameShell.h"
+#include "Gameshell.h"
 #include "Armor.h"
 #include "Healthpack.h"
 #include <iostream>

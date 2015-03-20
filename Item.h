@@ -1,6 +1,6 @@
 #ifndef _ITEM_H_
 #define _ITEM_H_
-#include <SDL.h>
+#include <SDL2/SDL.h>
 class Player;
 struct Item
 {

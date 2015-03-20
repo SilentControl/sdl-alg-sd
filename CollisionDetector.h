@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <vector>
 #include "Tile.h"
-#include "GameShell.h"
+#include "Gameshell.h"
 
 class Tile;
 

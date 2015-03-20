@@ -1,5 +1,5 @@
-#include <SDL.h>
-#include "GameShell.h"
+#include <SDL2/SDL.h>
+#include "Gameshell.h"
 #include "Healthpack.h"
 #include "Inventory.h"
 #include "Armor.h"

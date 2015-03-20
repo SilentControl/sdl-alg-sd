@@ -1,5 +1,5 @@
 #include "Armor.h"
-#include "GameShell.h"
+#include "Gameshell.h"
 
 Armor::Armor()
 {
