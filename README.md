@@ -10,5 +10,5 @@ Authors:
   Marian Alexandru Dinu
   
 To install:
-- sudo apt-get install sdl2-dev
+- sudo apt-get install libsdl2-dev
 - make
